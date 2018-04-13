@@ -466,7 +466,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 382e5d7057c4a1a418d4f7ea0f0b8cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   _face: {fileID: 212512783051251736}
   _shirt: {fileID: 212679577921036798}
   _view: {fileID: 1460865451237110}
@@ -498,7 +497,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 382e5d7057c4a1a418d4f7ea0f0b8cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   _face: {fileID: 212218216188893550}
   _shirt: {fileID: 212554185255108588}
   _view: {fileID: 1860097216347794}
@@ -513,7 +511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 382e5d7057c4a1a418d4f7ea0f0b8cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   _face: {fileID: 212213957055562962}
   _shirt: {fileID: 212115372386926196}
   _view: {fileID: 1775788578185136}

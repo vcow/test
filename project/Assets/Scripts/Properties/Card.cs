@@ -12,15 +12,26 @@ namespace Properties
         Paper
     }
 
-    public class Card : MonoBehaviour, ICard
+    public class Card : MonoBehaviour
     {
-        public CardType Type;
+        private CardType _type = CardType.Stone;
+        
+        public CardType Type
+        {
+            get { return _type; }
+            set
+            {
+                if (value == _type) return;
+                _type = value;
+                UpdateCard();
+            }
+        }
 
         [SerializeField] private SpriteRenderer _face;
         [SerializeField] private SpriteRenderer _shirt;
         [SerializeField] private GameObject _view;
 
-        void ICard.UpdateCard()
+        private void UpdateCard()
         {
             Assert.IsNotNull(_face);
             Assert.IsNotNull(_shirt);
@@ -47,7 +58,7 @@ namespace Properties
         {
             if (Application.isPlaying)
             {
-                ((ICard) this).UpdateCard();
+                UpdateCard();
             }
         }
     }

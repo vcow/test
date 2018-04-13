@@ -8,13 +8,18 @@ namespace Editor
     {
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
-
-            var card = target as ICard;
-            if (card != null)
+            serializedObject.Update();
+            
+            var p = serializedObject.GetIterator();
+            while (p.NextVisible(true))
             {
-                card.UpdateCard();
+                EditorGUILayout.PropertyField(p);
             }
+            
+            var card = (Card) target;
+            card.Type = (CardType) EditorGUILayout.EnumPopup("Type", card.Type);
+            
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
