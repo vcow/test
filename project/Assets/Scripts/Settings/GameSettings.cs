@@ -10,6 +10,10 @@ namespace Settings
         public Sprite ScissorsFace;
         public Sprite PaperFace;
         public Sprite Shirt;
+
+        public bool Cheeting;
+        [Range(0f, 1f)]
+        public float LuckPercent = 0.5f;
         
         private static GameSettings _instance;
 

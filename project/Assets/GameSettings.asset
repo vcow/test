@@ -15,3 +15,5 @@ MonoBehaviour:
   ScissorsFace: {fileID: 21300000, guid: a2ac44a6e39c94a4a8a29bed1d516df1, type: 3}
   PaperFace: {fileID: 21300000, guid: 660476dd63a6f934fb83f44ed35d4d3c, type: 3}
   Shirt: {fileID: 21300000, guid: 0295744ff3fe0a14caa2aa78a0757c80, type: 3}
+  Cheeting: 0
+  LuckPercent: 0.5

@@ -1,5 +1,7 @@
 ﻿using Properties;
+using Settings;
 using UniRx;
+using UnityEngine;
 
 namespace Models
 {
@@ -15,7 +17,7 @@ namespace Models
         public readonly ReactiveProperty<CardType> EnemyCard;
 
         public bool Cheeting;
-        public float LuckPercent = 0.5f;
+        public float LuckPercent;
 
         private GameModel()
         {
@@ -25,6 +27,9 @@ namespace Models
             
             UserCard = new ReactiveProperty<CardType>(CardType.Stone);
             EnemyCard = new ReactiveProperty<CardType>(CardType.Stone);
+
+            Cheeting = GameSettings.Instance.Cheeting;
+            LuckPercent = Mathf.Clamp01(GameSettings.Instance.LuckPercent);
         }
 
         public static GameModel Instance
