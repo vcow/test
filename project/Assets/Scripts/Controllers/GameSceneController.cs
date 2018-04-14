@@ -59,6 +59,47 @@ namespace Controllers
                 });
 
             ((RectTransform) _scoresLabel.transform).DOAnchorPosY(-70f, 1f).SetDelay(2.5f);
+            
+            _leftButton.onClick.AddListener(OnLeftButton);
+            _rightButton.onClick.AddListener(OnRightButton);
+            _goButton.onClick.AddListener(OnGoButton);
+            _okButton.onClick.AddListener(OnOkButton);
+        }
+
+        private void OnDestroy()
+        {
+            _leftButton.onClick.RemoveListener(OnLeftButton);
+            _rightButton.onClick.RemoveListener(OnRightButton);
+            _goButton.onClick.RemoveListener(OnGoButton);
+            _okButton.onClick.RemoveListener(OnOkButton);
+        }
+
+        private void OnLeftButton()
+        {
+            if (_isAnimated || _userCarousell == null) return;
+
+            _isAnimated = true;
+            _userCarousell.MoveLeft().onComplete += () => _isAnimated = false;
+        }
+
+        private void OnRightButton()
+        {
+            if (_isAnimated || _userCarousell == null) return;
+
+            _isAnimated = true;
+            _userCarousell.MoveRight().onComplete += () => _isAnimated = false;
+        }
+
+        private void OnGoButton()
+        {
+            if (_isAnimated) return;
+            
+        }
+
+        private void OnOkButton()
+        {
+            if (_isAnimated) return;
+            
         }
 
         private void DoUserMove()
@@ -75,7 +116,6 @@ namespace Controllers
             _userCarousell.FillCards();
             
             carousellInstance.transform.position = new Vector3(0, 12, 0);
-            _userCarousell.CardsGroup.transform.rotation = new Quaternion(0, -300, 0, 0);
             
             ((RectTransform) _leftButtonContainer.transform).anchoredPosition = new Vector2(-100, 40);
             ((RectTransform) _rightButtonContainer.transform).anchoredPosition = new Vector2(100, 40);
@@ -84,11 +124,13 @@ namespace Controllers
 
             _isAnimated = true;
             DOTween.Sequence().Append(carousellInstance.transform.DOMoveY(0.4f, 2f).SetEase(Ease.OutBack))
-                .Join(_userCarousell.CardsGroup.transform.DORotate(new Vector3(0, 0, 0), 3f).SetEase(Ease.OutBack))
+                .Join(DOTween.To(value => _userCarousell.CardsGroup.transform.rotation = Quaternion.Euler(0, value, 0),
+                    360f, 0, 3f).SetEase(Ease.OutBack))
                 .Join(((RectTransform) _leftButtonContainer.transform).DOAnchorPosX(140f, 1f)
                     .SetEase(Ease.OutCubic).SetDelay(1.5f))
                 .Join(((RectTransform) _rightButtonContainer.transform).DOAnchorPosX(-140f, 1f).SetEase(Ease.OutCubic))
-                .Join(((RectTransform) _goButtonContainer.transform).DOAnchorPosY(140f, 1f).SetEase(Ease.OutCubic));
+                .Join(((RectTransform) _goButtonContainer.transform).DOAnchorPosY(140f, 1f).SetEase(Ease.OutCubic))
+                .onComplete += () => _isAnimated = false;
         }
 
         private void KillUserCarousell()

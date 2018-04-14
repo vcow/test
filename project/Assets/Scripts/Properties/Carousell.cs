@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Properties
@@ -41,6 +42,22 @@ namespace Properties
                 rawType = ++rawType % 3;
                 _cards[i].CardType = type;
             }
+        }
+
+        public Tween MoveLeft()
+        {
+            DOTween.Clear(CardsGroup);
+            var step = 360f / _cards.Count;
+            var ang = Mathf.Round(CardsGroup.transform.rotation.eulerAngles.y / step) * step;
+            return CardsGroup.transform.DORotate(new Vector3(0, ang + step), 0.35f).SetEase(Ease.OutCubic);
+        }
+
+        public Tween MoveRight()
+        {
+            DOTween.Clear(CardsGroup);
+            var step = 360f / _cards.Count;
+            var ang = Mathf.Round(CardsGroup.transform.rotation.eulerAngles.y / step) * step;
+            return CardsGroup.transform.DORotate(new Vector3(0, ang - step), 0.35f).SetEase(Ease.OutCubic);
         }
     }
 }
