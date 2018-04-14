@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Properties
 {
@@ -35,7 +36,7 @@ namespace Properties
 
         public void FillCards()
         {
-            var rawType = (int) Math.Round(UnityEngine.Random.value * 2);
+            var rawType = (int) Math.Round(Random.value * 2);
             for (int i = 0, l = _cards.Count; i < l; ++i)
             {
                 var type = (CardType) rawType;
@@ -58,6 +59,25 @@ namespace Properties
             var step = 360f / _cards.Count;
             var ang = Mathf.Round(CardsGroup.transform.rotation.eulerAngles.y / step) * step;
             return CardsGroup.transform.DORotate(new Vector3(0, ang - step), 0.35f).SetEase(Ease.OutCubic);
+        }
+
+        public Card SelectedCard
+        {
+            get
+            {
+                Card card = null;
+                var ang = float.MaxValue;
+                var groupPos = _cardsGroup.transform.position;
+                var lookAtPos = _lookAtPoint.transform.position - groupPos;
+                _cards.ForEach(c => 
+                {
+                    var a = Mathf.Abs(Vector3.Angle(lookAtPos, c.transform.position - groupPos));
+                    if (!(a < ang)) return;
+                    ang = a;
+                    card = c;
+                });
+                return card;
+            }
         }
     }
 }

@@ -27,6 +27,9 @@ namespace Controllers
         private Carousell _userCarousell;
         private Carousell _enemyCarousell;
 
+        private Card _userCard;
+        private Card _enemyCard;
+
         private bool _isAnimated;
 
         protected override void Start()
@@ -92,8 +95,8 @@ namespace Controllers
 
         private void OnGoButton()
         {
-            if (_isAnimated) return;
-            
+            if (_isAnimated || _userCarousell == null) return;
+            DoEnemyMove();
         }
 
         private void OnOkButton()
@@ -105,9 +108,11 @@ namespace Controllers
         private void DoUserMove()
         {
             Assert.IsNotNull(_carousellPrefab);
-            
-            KillUserCarousell();
-            KillEnemyCarousell();
+
+            Assert.IsNull(_userCarousell);
+            Assert.IsNull(_enemyCarousell);
+            Assert.IsNull(_userCard);
+            Assert.IsNull(_enemyCard);
 
             var carousellInstance = Instantiate(_carousellPrefab);
             _userCarousell = carousellInstance.GetComponent<Carousell>();
@@ -133,18 +138,16 @@ namespace Controllers
                 .onComplete += () => _isAnimated = false;
         }
 
-        private void KillUserCarousell()
+        private void DoEnemyMove()
         {
-            if (_userCarousell == null) return;
-            Destroy(_userCarousell);
-            _userCarousell = null;
-        }
+            Assert.IsNotNull(_carousellPrefab);
+            Assert.IsNotNull(_userCarousell);
 
-        private void KillEnemyCarousell()
-        {
-            if (_enemyCarousell == null) return;
-            Destroy(_enemyCarousell);
-            _enemyCarousell = null;
+            Assert.IsNull(_enemyCarousell);
+//            Assert.IsNull(_userCard);
+            Assert.IsNull(_enemyCard);
+
+            _userCard = _userCarousell.SelectedCard;
         }
     }
 }
