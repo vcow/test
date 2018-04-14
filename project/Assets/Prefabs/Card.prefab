@@ -67,6 +67,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4236468994731648}
   - component: {fileID: 114430166018902200}
+  - component: {fileID: 114359466370456696}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -129,6 +130,17 @@ Transform:
   m_Father: {fileID: 4236468994731648}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114359466370456696
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1755459644608178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb5e5014f40d6948815a7be8b174ff2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114430166018902200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -140,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 382e5d7057c4a1a418d4f7ea0f0b8cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 0
   _face: {fileID: 212466066852613596}
   _shirt: {fileID: 212311409809665288}
   _view: {fileID: 1486779152088728}

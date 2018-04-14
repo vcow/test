@@ -1,5 +1,6 @@
 ﻿using System;
 using Settings;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -14,19 +15,20 @@ namespace Properties
 
     public class Card : MonoBehaviour
     {
-        private CardType _type = CardType.Stone;
-        
-        public CardType Type
+        private CardType _cardType;
+
+        public CardType CardType
         {
-            get { return _type; }
+            get { return _cardType; }
             set
             {
-                if (value == _type) return;
-                _type = value;
+                if (value == _cardType) return;
+                _cardType = value;
                 UpdateCard();
             }
         }
 
+        [SerializeField] private CardType _type;
         [SerializeField] private SpriteRenderer _face;
         [SerializeField] private SpriteRenderer _shirt;
         [SerializeField] private GameObject _view;
@@ -38,7 +40,7 @@ namespace Properties
 
             var settings = GameSettings.Instance;
             _shirt.sprite = settings.Shirt;
-            switch (Type)
+            switch (CardType)
             {
                 case CardType.Stone:
                     _face.sprite = settings.StoneFace;
@@ -56,10 +58,19 @@ namespace Properties
 
         private void Start()
         {
-            if (Application.isPlaying)
-            {
-                UpdateCard();
-            }
+            CardType = _type;
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            IDisposable task = null;
+            task = Observable.Interval(TimeSpan.Zero).Subscribe(unit =>
+            {
+                CardType = _type;
+                task.Dispose();
+            });
+        }
+#endif
     }
 }

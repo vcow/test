@@ -58,14 +58,11 @@ namespace Controllers
                 _settingsWindowTween.Complete();
             }
 
-            if (_settingsIsOpened)
-            {
-                _settingsWindowTween = ((RectTransform) _settingsWindow.transform).DOAnchorPosY(-183, 0.5f);
-            }
-            else
-            {
-                _settingsWindowTween = ((RectTransform) _settingsWindow.transform).DOAnchorPosY(160, 0.3f);
-            }
+            _settingsWindowTween = _settingsIsOpened
+                ? ((RectTransform) _settingsWindow.transform).DOAnchorPosY(-183, 0.5f)
+                : ((RectTransform) _settingsWindow.transform).DOAnchorPosY(160, 0.3f);
+            
+            _settingsWindowTween.onComplete += () => _settingsWindowTween = null;
         }
     }
 }
