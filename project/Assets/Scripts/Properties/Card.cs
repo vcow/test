@@ -58,18 +58,19 @@ namespace Properties
 
         private void Start()
         {
-            CardType = _type;
+            _type = CardType;
         }
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
             IDisposable task = null;
-            task = Observable.Interval(TimeSpan.Zero).Subscribe(unit =>
-            {
-                CardType = _type;
-                task.Dispose();
-            });
+            task = Observable.Interval(TimeSpan.Zero).
+                ObserveOnMainThread(MainThreadDispatchType.Update).Subscribe(unit =>
+                {
+                    CardType = _type;
+                    task.Dispose();
+                });
         }
 #endif
     }

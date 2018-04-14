@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Properties
@@ -9,6 +10,11 @@ namespace Properties
         [SerializeField] private GameObject _lookAtPoint;
         [SerializeField] private GameObject _cardsGroup;
         [SerializeField] private List<Card> _cards;
+        
+        public GameObject CardsGroup
+        {
+            get { return _cardsGroup; }
+        }
 
         private void Update()
         {
@@ -24,6 +30,17 @@ namespace Properties
             
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(_lookAtPoint.transform.position, 0.25f);
+        }
+
+        public void FillCards()
+        {
+            var rawType = (int) Math.Round(UnityEngine.Random.value * 2);
+            for (int i = 0, l = _cards.Count; i < l; ++i)
+            {
+                var type = (CardType) rawType;
+                rawType = ++rawType % 3;
+                _cards[i].CardType = type;
+            }
         }
     }
 }

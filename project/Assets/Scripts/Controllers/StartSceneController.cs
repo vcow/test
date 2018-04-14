@@ -2,6 +2,7 @@
 using Properties;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Controllers
@@ -41,6 +42,10 @@ namespace Controllers
 
         private void OnStartButton()
         {
+            _startButton.enabled = false;
+            _settingsButton.enabled = false;
+            
+            SceneManager.LoadScene("Main", LoadSceneMode.Single);
         }
 
         private void OnSettingsButton()
