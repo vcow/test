@@ -14,7 +14,7 @@ namespace Controllers
         [SerializeField] private Button _rightButton;
         [SerializeField] private Button _goButton;
         [SerializeField] private Button _okButton;
-        
+
         [SerializeField] private Text _scoresLabel;
 
         private Carousell _userCarousell;
@@ -43,7 +43,7 @@ namespace Controllers
 
         RectTransform IGameSceneController.OkButton
         {
-            get { return (RectTransform)_okButton.transform.parent.transform; }
+            get { return (RectTransform) _okButton.transform.parent.transform; }
         }
 
         RectTransform IGameSceneController.Scores
@@ -93,7 +93,7 @@ namespace Controllers
             _okButton.onClick.AddListener(OnOkButton);
 
             _motionController = new GameSceneMotionController(this);
-            
+
             DoUserMove(false, 1f, true);
         }
 
@@ -130,7 +130,6 @@ namespace Controllers
         private void OnOkButton()
         {
             if (_isAnimated) return;
-            
         }
 
         private void DoUserMove(bool initialize = true, float delay = 0, bool animateScores = false)
@@ -145,13 +144,12 @@ namespace Controllers
             var carousellInstance = Instantiate(_carousellPrefab);
             _userCarousell = carousellInstance.GetComponent<Carousell>();
             Assert.IsNotNull(_userCarousell);
-            
+
             _userCarousell.FillCards();
-            
-            carousellInstance.transform.position = new Vector3(0, 12, 0);
-            
+
             _isAnimated = true;
-            _motionController.MoveUser(initialize, delay, animateScores).onComplete += () => _isAnimated = false;
+            _motionController.ShowUi(initialize, delay + 1.5f, animateScores).onComplete += () => _isAnimated = false;
+            _motionController.ShowUserCarousell(delay);
         }
 
         private void DoEnemyMove()
@@ -160,10 +158,32 @@ namespace Controllers
             Assert.IsNotNull(_userCarousell);
 
             Assert.IsNull(_enemyCarousell);
-//            Assert.IsNull(_userCard);
+            Assert.IsNull(_userCard);
             Assert.IsNull(_enemyCard);
 
-            _userCard = _userCarousell.SelectedCard;
+            _userCard = _userCarousell.ExtractCard(_userCarousell.SelectedCard);
+            Assert.IsNotNull(_userCard);
+
+            var carousellInstance = Instantiate(_carousellPrefab);
+            _enemyCarousell = carousellInstance.GetComponent<Carousell>();
+            Assert.IsNotNull(_enemyCarousell);
+
+            _isAnimated = true;
+            _motionController.HideUi(true, 0, true).onComplete += () => _isAnimated = false;
+
+            _motionController.HideUserCarousell().onComplete += () =>
+            {
+                Destroy(_userCarousell);
+                _userCarousell = null;
+            };
+
+            _motionController.ShowEnemyCarousell(1.7f).onComplete += () =>
+            {
+                _enemyCard = _enemyCarousell.ExtractCard(_enemyCarousell.SelectedCard);
+                Assert.IsNotNull(_enemyCard);
+
+                _motionController.HideEnemyCarousell(0.7f);
+            };
         }
     }
 }

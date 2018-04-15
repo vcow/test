@@ -24,7 +24,10 @@ namespace Properties
             if (_lookAtPoint == null) return;
             
             var t = _lookAtPoint.transform;
-            _cards.ForEach(c => c.transform.LookAt(t));
+            _cards.ForEach(c =>
+            {
+                if (c != null) c.transform.LookAt(t);
+            });
         }
         
         private void OnDrawGizmos()
@@ -42,7 +45,11 @@ namespace Properties
             {
                 var type = (CardType) rawType;
                 rawType = ++rawType % 3;
-                _cards[i].CardType = type;
+                var card = _cards[i];
+                if (card != null)
+                {
+                    card.CardType = type;
+                }
             }
         }
 
@@ -70,8 +77,9 @@ namespace Properties
                 var ang = float.MaxValue;
                 var groupPos = _cardsGroup.transform.position;
                 var lookAtPos = _lookAtPoint.transform.position - groupPos;
-                _cards.ForEach(c => 
+                _cards.ForEach(c =>
                 {
+                    if (c == null) return;
                     var a = Mathf.Abs(Vector3.Angle(lookAtPos, c.transform.position - groupPos));
                     if (!(a < ang)) return;
                     ang = a;
@@ -79,6 +87,17 @@ namespace Properties
                 });
                 return card;
             }
+        }
+
+        public Card ExtractCard(Card extractedCard)
+        {
+            if (_cards.Contains(extractedCard))
+            {
+                _cards.Remove(extractedCard);
+            }
+            
+            extractedCard.transform.SetParent(null);
+            return extractedCard;
         }
     }
 }
