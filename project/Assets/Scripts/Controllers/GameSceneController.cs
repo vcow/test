@@ -1,4 +1,6 @@
-﻿using Controllers.Motion;
+﻿using Controllers.AI;
+using Controllers.Motion;
+using Models;
 using Properties;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -25,6 +27,8 @@ namespace Controllers
 
         private GameSceneMotionController _motionController;
         private bool _isAnimated;
+
+        private Enemy _enemy;
 
         RectTransform IGameSceneController.LeftButton
         {
@@ -92,6 +96,7 @@ namespace Controllers
             _goButton.onClick.AddListener(OnGoButton);
             _okButton.onClick.AddListener(OnOkButton);
 
+            _enemy = new Enemy();
             _motionController = new GameSceneMotionController(this);
 
             DoUserMove(false, 1f, true);
@@ -124,6 +129,10 @@ namespace Controllers
         private void OnGoButton()
         {
             if (_isAnimated || _userCarousell == null) return;
+            
+            _userCard = _userCarousell.ExtractCard(_userCarousell.SelectedCard);
+            GameModel.Instance.UserCard = _userCard.CardType;
+            
             DoEnemyMove();
         }
 
@@ -156,13 +165,10 @@ namespace Controllers
         {
             Assert.IsNotNull(_carousellPrefab);
             Assert.IsNotNull(_userCarousell);
+            Assert.IsNotNull(_userCard);
 
             Assert.IsNull(_enemyCarousell);
-            Assert.IsNull(_userCard);
             Assert.IsNull(_enemyCard);
-
-            _userCard = _userCarousell.ExtractCard(_userCarousell.SelectedCard);
-            Assert.IsNotNull(_userCard);
 
             var carousellInstance = Instantiate(_carousellPrefab);
             _enemyCarousell = carousellInstance.GetComponent<Carousell>();
@@ -182,8 +188,28 @@ namespace Controllers
                 _enemyCard = _enemyCarousell.ExtractCard(_enemyCarousell.SelectedCard);
                 Assert.IsNotNull(_enemyCard);
 
-                _motionController.HideEnemyCarousell(0.7f);
+                var enemyCardType = _enemy.Move();
+                _enemyCard.CardType = enemyCardType;
+                GameModel.Instance.EnemyCard = enemyCardType;
+
+                _motionController.HideEnemyCarousell(0.7f).onComplete += () =>
+                {
+                    Destroy(_enemyCarousell);
+                    _enemyCarousell = null;
+                    
+                    DoResult();
+                };
             };
+        }
+
+        private void DoResult()
+        {
+            Assert.IsNotNull(_userCard);
+            Assert.IsNotNull(_enemyCard);
+            
+            var model = GameModel.Instance;
+            var userCardAnimation = model.IsUserWin() ? _motionController.UserWin() : _motionController.UserLose();
+            var enemyCardAnimation = model.IsEnemyWin() ? _motionController.EnemyWin() : _motionController.EnemyLose();
         }
     }
 }

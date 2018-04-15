@@ -118,5 +118,30 @@ namespace Controllers.Motion
                 .Append(_gameScene.EnemyCard.transform.DOLookAt(Camera.main.transform.position, 0.5f)
                     .SetEase(Ease.OutBack));
         }
+
+        public Tween UserWin(float delay = 0)
+        {
+            var r = _gameScene.UserCard.gameObject.GetComponentInChildren<SpriteRenderer>();
+            r.material.color = new Color(1, 1, 1, 0.3f);
+            return null;
+        }
+
+        public Tween UserLose(float delay = 0)
+        {
+            
+            return null;
+        }
+
+        public Tween EnemyWin(float delay = 0)
+        {
+            
+            return null;
+        }
+
+        public Tween EnemyLose(float delay = 0)
+        {
+            
+            return null;
+        }
     }
 }

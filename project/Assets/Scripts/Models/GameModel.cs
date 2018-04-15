@@ -1,6 +1,5 @@
 ﻿using Properties;
 using Settings;
-using UniRx;
 using UnityEngine;
 
 namespace Models
@@ -9,25 +8,14 @@ namespace Models
     {
         private static GameModel _instance;
 
-        public readonly IntReactiveProperty Round;
-        public readonly IntReactiveProperty UserScores;
-        public readonly IntReactiveProperty EnemyScores;
-
-        public readonly ReactiveProperty<CardType> UserCard;
-        public readonly ReactiveProperty<CardType> EnemyCard;
-
         public bool Cheeting;
         public float LuckPercent;
 
+        public CardType UserCard;
+        public CardType EnemyCard;
+
         private GameModel()
         {
-            Round = new IntReactiveProperty(1);
-            UserScores = new IntReactiveProperty(0);
-            EnemyScores = new IntReactiveProperty(0);
-            
-            UserCard = new ReactiveProperty<CardType>(CardType.Stone);
-            EnemyCard = new ReactiveProperty<CardType>(CardType.Stone);
-
             Cheeting = GameSettings.Instance.Cheeting;
             LuckPercent = Mathf.Clamp01(GameSettings.Instance.LuckPercent);
         }
@@ -35,6 +23,20 @@ namespace Models
         public static GameModel Instance
         {
             get { return _instance ?? (_instance = new GameModel()); }
+        }
+
+        public bool IsUserWin()
+        {
+            return UserCard == CardType.Paper && EnemyCard != CardType.Scissors
+                   || UserCard == CardType.Scissors && EnemyCard != CardType.Stone
+                   || UserCard == CardType.Stone && EnemyCard != CardType.Paper;
+        }
+
+        public bool IsEnemyWin()
+        {
+            return EnemyCard == CardType.Paper && UserCard != CardType.Scissors
+                   || EnemyCard == CardType.Scissors && UserCard != CardType.Stone
+                   || EnemyCard == CardType.Stone && UserCard != CardType.Paper;
         }
     }
 }
