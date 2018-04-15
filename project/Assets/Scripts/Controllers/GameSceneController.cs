@@ -140,6 +140,11 @@ namespace Controllers
         private void OnOkButton()
         {
             if (_isAnimated) return;
+
+            _isAnimated = true;
+            _motionController.HideRepeatUi(true);
+
+            DoUserMove();
         }
 
         private void DoUserMove(bool initialize = true, float delay = 0, bool animateScores = false)
@@ -158,7 +163,8 @@ namespace Controllers
             _userCarousell.FillCards();
 
             _isAnimated = true;
-            _motionController.ShowStartUi(initialize, delay + 1.5f, animateScores).onComplete += () => _isAnimated = false;
+            _motionController.ShowStartUi(initialize, delay + 1.5f, animateScores).onComplete +=
+                () => _isAnimated = false;
             _motionController.ShowUserCarousell(delay);
         }
 
@@ -234,13 +240,23 @@ namespace Controllers
             {
                 Destroy(_userCard.gameObject);
                 _userCard = null;
-                
+
                 Destroy(_enemyCard.gameObject);
                 _enemyCard = null;
 
                 _isAnimated = true;
                 _motionController.ShowRepeatUi(true).onComplete += () => _isAnimated = false;
             };
+
+            UpdateScores();
+        }
+
+        private void UpdateScores()
+        {
+            Assert.IsNotNull(_scoresLabel);
+
+            var model = GameModel.Instance;
+            _scoresLabel.text = string.Format("{0:D2}:{1:D2}", model.UserScores, model.EnemyScores);
         }
     }
 }

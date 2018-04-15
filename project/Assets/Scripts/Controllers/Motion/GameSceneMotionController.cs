@@ -80,7 +80,7 @@ namespace Controllers.Motion
         {
             if (initialize)
             {
-                _gameScene.OkButton.anchoredPosition = new Vector2(0, -120);
+                _gameScene.OkButton.anchoredPosition = new Vector2(0, 140);
             }
 
             return _gameScene.OkButton.DOAnchorPosY(-120f, 0.7f).SetEase(Ease.InBack).SetDelay(delay);
