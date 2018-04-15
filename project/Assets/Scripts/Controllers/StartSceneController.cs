@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using Controllers.Motion;
+using DG.Tweening;
 using Properties;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -7,14 +8,30 @@ using UnityEngine.UI;
 
 namespace Controllers
 {
-    public class StartSceneController : SceneControllerBase
+    public class StartSceneController : SceneControllerBase, IStartSceneController
     {
         [SerializeField] private SettingsWindow _settingsWindow;
         [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _startButton;
 
         private bool _settingsIsOpened;
-        private Tween _settingsWindowTween;
+
+        private StartSceneMotionController _motionController;
+
+        RectTransform IStartSceneController.StartButton
+        {
+            get { return (RectTransform) _startButton.transform; }
+        }
+
+        RectTransform IStartSceneController.SettingsButton
+        {
+            get { return (RectTransform) _settingsButton.transform.parent.transform; }
+        }
+
+        RectTransform IStartSceneController.SettingsWindow
+        {
+            get { return (RectTransform) _settingsWindow.transform; }
+        }
 
         protected override void Start()
         {
@@ -32,6 +49,9 @@ namespace Controllers
 
             _startButton.onClick.AddListener(OnStartButton);
             _settingsButton.onClick.AddListener(OnSettingsButton);
+            
+            _motionController = new StartSceneMotionController(this);
+            _motionController.MoveUiIn(false, 2f);
         }
 
         private void OnDestroy()
@@ -58,16 +78,7 @@ namespace Controllers
                 animator.SetBool("IsOpened", _settingsIsOpened);
             }
 
-            if (_settingsWindowTween != null)
-            {
-                _settingsWindowTween.Complete();
-            }
-
-            _settingsWindowTween = _settingsIsOpened
-                ? ((RectTransform) _settingsWindow.transform).DOAnchorPosY(-183, 0.5f)
-                : ((RectTransform) _settingsWindow.transform).DOAnchorPosY(160, 0.3f);
-            
-            _settingsWindowTween.onComplete += () => _settingsWindowTween = null;
+            _motionController.MoveSettingsWindow(_settingsIsOpened);
         }
     }
 }
