@@ -53,7 +53,7 @@ namespace Properties
             }
         }
 
-        public Tween MoveLeft()
+        public Tween MoveRight()
         {
             DOTween.Clear(_cardsGroup);
             var step = 360f / _cards.Count;
@@ -61,7 +61,7 @@ namespace Properties
             return _cardsGroup.transform.DORotate(new Vector3(0, ang + step), 0.5f).SetEase(Ease.OutBack);
         }
 
-        public Tween MoveRight()
+        public Tween MoveLeft()
         {
             DOTween.Clear(_cardsGroup);
             var step = 360f / _cards.Count;
