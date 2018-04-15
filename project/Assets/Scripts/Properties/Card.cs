@@ -13,9 +13,12 @@ namespace Properties
         Paper
     }
 
-    public class Card : MonoBehaviour
+    public class Card : MonoBehaviour, ICard
     {
         private CardType _cardType;
+        private Color _color = Color.white;
+
+        private Renderer[] _renderers;
 
         public CardType CardType
         {
@@ -32,6 +35,20 @@ namespace Properties
         [SerializeField] private SpriteRenderer _face;
         [SerializeField] private SpriteRenderer _shirt;
         [SerializeField] private GameObject _view;
+        
+        public Color Color
+        {
+            get { return _color; }
+            set
+            {
+                if (value == _color) return;
+                _color = value;
+                foreach (var r in _renderers)
+                {
+                    r.material.color = _color;
+                }
+            }
+        }
 
         private void UpdateCard()
         {
@@ -59,6 +76,7 @@ namespace Properties
         private void Start()
         {
             _type = CardType;
+            _renderers = GetComponentsInChildren<Renderer>();
         }
 
 #if UNITY_EDITOR

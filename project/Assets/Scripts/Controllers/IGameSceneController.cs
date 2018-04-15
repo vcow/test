@@ -14,7 +14,7 @@ namespace Controllers
         ICarousell UserCarousell { get; }
         ICarousell EnemyCarousell { get; }
         
-        Transform UserCard { get; }
-        Transform EnemyCard { get; }
+        ICard UserCard { get; }
+        ICard EnemyCard { get; }
     }
 }

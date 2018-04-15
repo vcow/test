@@ -14,6 +14,9 @@ namespace Models
         public CardType UserCard;
         public CardType EnemyCard;
 
+        public int UserScores;
+        public int EnemyScores;
+
         private GameModel()
         {
             Cheeting = GameSettings.Instance.Cheeting;
@@ -25,18 +28,28 @@ namespace Models
             get { return _instance ?? (_instance = new GameModel()); }
         }
 
-        public bool IsUserWin()
+        public bool IsUserWin(bool withDeadHeat)
         {
-            return UserCard == CardType.Paper && EnemyCard != CardType.Scissors
-                   || UserCard == CardType.Scissors && EnemyCard != CardType.Stone
-                   || UserCard == CardType.Stone && EnemyCard != CardType.Paper;
+            if (withDeadHeat && UserCard == EnemyCard)
+            {
+                return true;
+            }
+            
+            return UserCard == CardType.Paper && EnemyCard == CardType.Stone
+                   || UserCard == CardType.Scissors && EnemyCard == CardType.Paper
+                   || UserCard == CardType.Stone && EnemyCard == CardType.Scissors;
         }
 
-        public bool IsEnemyWin()
+        public bool IsEnemyWin(bool withDeadHeat)
         {
-            return EnemyCard == CardType.Paper && UserCard != CardType.Scissors
-                   || EnemyCard == CardType.Scissors && UserCard != CardType.Stone
-                   || EnemyCard == CardType.Stone && UserCard != CardType.Paper;
+            if (withDeadHeat && UserCard == EnemyCard)
+            {
+                return true;
+            }
+            
+            return EnemyCard == CardType.Paper && UserCard == CardType.Stone
+                   || EnemyCard == CardType.Scissors && UserCard == CardType.Paper
+                   || EnemyCard == CardType.Stone && UserCard == CardType.Scissors;
         }
     }
 }

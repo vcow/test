@@ -121,27 +121,32 @@ namespace Controllers.Motion
 
         public Tween UserWin(float delay = 0)
         {
-            var r = _gameScene.UserCard.gameObject.GetComponentInChildren<SpriteRenderer>();
-            r.material.color = new Color(1, 1, 1, 0.3f);
-            return null;
+            return _gameScene.UserCard.transform.DOMoveY(8.5f, 2f).SetEase(Ease.InCubic).SetDelay(delay);
         }
 
         public Tween UserLose(float delay = 0)
         {
-            
-            return null;
+            var r = _gameScene.UserCard.transform.eulerAngles;
+            r.x -= 90;
+            return DOTween.Sequence().Append(DOTween.To(
+                    value => { _gameScene.UserCard.Color = new Color(1, 1, 1, value); }, 1, 0, 3f))
+                .SetEase(Ease.OutCubic).SetDelay(delay).Join(_gameScene.UserCard.transform.DOLocalRotate(r, 2f)
+                    .SetEase(Ease.OutBounce).SetDelay(1f));
         }
 
         public Tween EnemyWin(float delay = 0)
         {
-            
-            return null;
+            return _gameScene.EnemyCard.transform.DOMoveY(8.5f, 2f).SetEase(Ease.InCubic).SetDelay(delay);
         }
 
         public Tween EnemyLose(float delay = 0)
         {
-            
-            return null;
+            var r = _gameScene.EnemyCard.transform.eulerAngles;
+            r.x -= 90;
+            return DOTween.Sequence().Append(DOTween.To(
+                    value => { _gameScene.EnemyCard.Color = new Color(1, 1, 1, value); }, 1, 0, 3f))
+                .SetEase(Ease.OutCubic).SetDelay(delay).Join(_gameScene.EnemyCard.transform.DOLocalRotate(r, 2f)
+                    .SetEase(Ease.OutBounce).SetDelay(1f));
         }
     }
 }

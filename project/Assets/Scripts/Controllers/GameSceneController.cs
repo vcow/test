@@ -1,5 +1,6 @@
 ﻿using Controllers.AI;
 using Controllers.Motion;
+using DG.Tweening;
 using Models;
 using Properties;
 using UnityEngine;
@@ -65,14 +66,14 @@ namespace Controllers
             get { return _enemyCarousell; }
         }
 
-        Transform IGameSceneController.UserCard
+        ICard IGameSceneController.UserCard
         {
-            get { return _userCard.transform; }
+            get { return _userCard; }
         }
 
-        Transform IGameSceneController.EnemyCard
+        ICard IGameSceneController.EnemyCard
         {
-            get { return _enemyCard.transform; }
+            get { return _enemyCard; }
         }
 
         protected override void Start()
@@ -129,10 +130,10 @@ namespace Controllers
         private void OnGoButton()
         {
             if (_isAnimated || _userCarousell == null) return;
-            
+
             _userCard = _userCarousell.ExtractCard(_userCarousell.SelectedCard);
             GameModel.Instance.UserCard = _userCard.CardType;
-            
+
             DoEnemyMove();
         }
 
@@ -196,7 +197,7 @@ namespace Controllers
                 {
                     Destroy(_enemyCarousell);
                     _enemyCarousell = null;
-                    
+
                     DoResult();
                 };
             };
@@ -206,10 +207,28 @@ namespace Controllers
         {
             Assert.IsNotNull(_userCard);
             Assert.IsNotNull(_enemyCard);
-            
+
             var model = GameModel.Instance;
-            var userCardAnimation = model.IsUserWin() ? _motionController.UserWin() : _motionController.UserLose();
-            var enemyCardAnimation = model.IsEnemyWin() ? _motionController.EnemyWin() : _motionController.EnemyLose();
+            Tween userCardAnimation, enemyCardAnimation;
+            if (model.IsUserWin(false))
+            {
+                userCardAnimation = _motionController.UserWin();
+                model.UserScores += 1;
+            }
+            else
+            {
+                userCardAnimation = _motionController.UserLose();
+            }
+
+            if (model.IsEnemyWin(false))
+            {
+                enemyCardAnimation = _motionController.EnemyWin();
+                model.EnemyScores += 1;
+            }
+            else
+            {
+                enemyCardAnimation = _motionController.EnemyLose();
+            }
         }
     }
 }
