@@ -158,7 +158,7 @@ namespace Controllers
             _userCarousell.FillCards();
 
             _isAnimated = true;
-            _motionController.ShowUi(initialize, delay + 1.5f, animateScores).onComplete += () => _isAnimated = false;
+            _motionController.ShowStartUi(initialize, delay + 1.5f, animateScores).onComplete += () => _isAnimated = false;
             _motionController.ShowUserCarousell(delay);
         }
 
@@ -176,11 +176,11 @@ namespace Controllers
             Assert.IsNotNull(_enemyCarousell);
 
             _isAnimated = true;
-            _motionController.HideUi(true, 0, true).onComplete += () => _isAnimated = false;
+            _motionController.HideStartUi(true, 0).onComplete += () => _isAnimated = false;
 
             _motionController.HideUserCarousell().onComplete += () =>
             {
-                Destroy(_userCarousell);
+                Destroy(_userCarousell.gameObject);
                 _userCarousell = null;
             };
 
@@ -195,7 +195,7 @@ namespace Controllers
 
                 _motionController.HideEnemyCarousell(0.7f).onComplete += () =>
                 {
-                    Destroy(_enemyCarousell);
+                    Destroy(_enemyCarousell.gameObject);
                     _enemyCarousell = null;
 
                     DoResult();
@@ -229,6 +229,18 @@ namespace Controllers
             {
                 enemyCardAnimation = _motionController.EnemyLose();
             }
+
+            DOTween.Sequence().Append(userCardAnimation).Join(enemyCardAnimation).onComplete += () =>
+            {
+                Destroy(_userCard.gameObject);
+                _userCard = null;
+                
+                Destroy(_enemyCard.gameObject);
+                _enemyCard = null;
+
+                _isAnimated = true;
+                _motionController.ShowRepeatUi(true).onComplete += () => _isAnimated = false;
+            };
         }
     }
 }

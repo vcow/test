@@ -58,7 +58,7 @@ namespace Properties
             DOTween.Clear(_cardsGroup);
             var step = 360f / _cards.Count;
             var ang = Mathf.Round(_cardsGroup.transform.rotation.eulerAngles.y / step) * step;
-            return _cardsGroup.transform.DORotate(new Vector3(0, ang + step), 0.35f).SetEase(Ease.OutCubic);
+            return _cardsGroup.transform.DORotate(new Vector3(0, ang + step), 0.5f).SetEase(Ease.OutBack);
         }
 
         public Tween MoveRight()
@@ -66,7 +66,7 @@ namespace Properties
             DOTween.Clear(_cardsGroup);
             var step = 360f / _cards.Count;
             var ang = Mathf.Round(_cardsGroup.transform.rotation.eulerAngles.y / step) * step;
-            return _cardsGroup.transform.DORotate(new Vector3(0, ang - step), 0.35f).SetEase(Ease.OutCubic);
+            return _cardsGroup.transform.DORotate(new Vector3(0, ang - step), 0.5f).SetEase(Ease.OutBack);
         }
 
         public Card SelectedCard

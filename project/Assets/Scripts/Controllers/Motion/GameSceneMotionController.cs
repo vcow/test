@@ -12,14 +12,13 @@ namespace Controllers.Motion
             _gameScene = gameScene;
         }
 
-        public Tween ShowUi(bool initialize, float delay = 0, bool animateScores = false)
+        public Tween ShowStartUi(bool initialize, float delay = 0, bool animateScores = false)
         {
             if (initialize)
             {
                 _gameScene.LeftButton.anchoredPosition = new Vector2(-100, 40);
                 _gameScene.RightButton.anchoredPosition = new Vector2(100, 40);
                 _gameScene.GoButton.anchoredPosition = new Vector2(0, -120);
-                _gameScene.OkButton.anchoredPosition = new Vector2(0, -120);
 
                 if (animateScores)
                 {
@@ -40,14 +39,13 @@ namespace Controllers.Motion
             return seq;
         }
 
-        public Tween HideUi(bool initialize, float delay = 0, bool animateScores = false)
+        public Tween HideStartUi(bool initialize, float delay = 0, bool animateScores = false)
         {
             if (initialize)
             {
                 _gameScene.LeftButton.anchoredPosition = new Vector2(140, 40);
                 _gameScene.RightButton.anchoredPosition = new Vector2(-140, 40);
                 _gameScene.GoButton.anchoredPosition = new Vector2(0, 140);
-                _gameScene.OkButton.anchoredPosition = new Vector2(0, -120);
 
                 if (animateScores)
                 {
@@ -66,6 +64,26 @@ namespace Controllers.Motion
             }
 
             return seq;
+        }
+
+        public Tween ShowRepeatUi(bool initialize, float delay = 0)
+        {
+            if (initialize)
+            {
+                _gameScene.OkButton.anchoredPosition = new Vector2(0, -120);
+            }
+
+            return _gameScene.OkButton.DOAnchorPosY(140f, 1f).SetEase(Ease.OutCubic).SetDelay(delay);
+        }
+
+        public Tween HideRepeatUi(bool initialize, float delay = 0)
+        {
+            if (initialize)
+            {
+                _gameScene.OkButton.anchoredPosition = new Vector2(0, -120);
+            }
+
+            return _gameScene.OkButton.DOAnchorPosY(-120f, 0.7f).SetEase(Ease.InBack).SetDelay(delay);
         }
 
         public Tween ShowUserCarousell(float delay = 0)
@@ -121,7 +139,7 @@ namespace Controllers.Motion
 
         public Tween UserWin(float delay = 0)
         {
-            return _gameScene.UserCard.transform.DOMoveY(8.5f, 2f).SetEase(Ease.InCubic).SetDelay(delay);
+            return _gameScene.UserCard.transform.DOMoveY(8.5f, 1.5f).SetEase(Ease.InCubic).SetDelay(delay);
         }
 
         public Tween UserLose(float delay = 0)
@@ -136,7 +154,7 @@ namespace Controllers.Motion
 
         public Tween EnemyWin(float delay = 0)
         {
-            return _gameScene.EnemyCard.transform.DOMoveY(8.5f, 2f).SetEase(Ease.InCubic).SetDelay(delay);
+            return _gameScene.EnemyCard.transform.DOMoveY(8.5f, 1.5f).SetEase(Ease.InCubic).SetDelay(delay);
         }
 
         public Tween EnemyLose(float delay = 0)

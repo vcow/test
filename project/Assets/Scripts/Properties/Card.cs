@@ -1,6 +1,5 @@
 ﻿using System;
 using Settings;
-using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -82,13 +81,7 @@ namespace Properties
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            IDisposable task = null;
-            task = Observable.Interval(TimeSpan.FromSeconds(0.1)).
-                ObserveOnMainThread(MainThreadDispatchType.Update).Subscribe(unit =>
-                {
-                    CardType = _type;
-                    task.Dispose();
-                });
+            CardType = _type;
         }
 #endif
     }
