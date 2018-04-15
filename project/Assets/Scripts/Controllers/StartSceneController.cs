@@ -1,5 +1,4 @@
 ﻿using Controllers.Motion;
-using DG.Tweening;
 using Properties;
 using UnityEngine;
 using UnityEngine.Assertions;

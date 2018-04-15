@@ -7,15 +7,16 @@ using Random = UnityEngine.Random;
 namespace Properties
 {
     [ExecuteInEditMode]
-    public class Carousell : MonoBehaviour
+    public class Carousell : MonoBehaviour, ICarousell
     {
         [SerializeField] private GameObject _lookAtPoint;
         [SerializeField] private GameObject _cardsGroup;
         [SerializeField] private List<Card> _cards;
-        
-        public GameObject CardsGroup
+        private Transform _cardsGroup1;
+
+        Transform ICarousell.CardsGroup
         {
-            get { return _cardsGroup; }
+            get { return _cardsGroup.transform; }
         }
 
         private void Update()
@@ -47,18 +48,18 @@ namespace Properties
 
         public Tween MoveLeft()
         {
-            DOTween.Clear(CardsGroup);
+            DOTween.Clear(_cardsGroup);
             var step = 360f / _cards.Count;
-            var ang = Mathf.Round(CardsGroup.transform.rotation.eulerAngles.y / step) * step;
-            return CardsGroup.transform.DORotate(new Vector3(0, ang + step), 0.35f).SetEase(Ease.OutCubic);
+            var ang = Mathf.Round(_cardsGroup.transform.rotation.eulerAngles.y / step) * step;
+            return _cardsGroup.transform.DORotate(new Vector3(0, ang + step), 0.35f).SetEase(Ease.OutCubic);
         }
 
         public Tween MoveRight()
         {
-            DOTween.Clear(CardsGroup);
+            DOTween.Clear(_cardsGroup);
             var step = 360f / _cards.Count;
-            var ang = Mathf.Round(CardsGroup.transform.rotation.eulerAngles.y / step) * step;
-            return CardsGroup.transform.DORotate(new Vector3(0, ang - step), 0.35f).SetEase(Ease.OutCubic);
+            var ang = Mathf.Round(_cardsGroup.transform.rotation.eulerAngles.y / step) * step;
+            return _cardsGroup.transform.DORotate(new Vector3(0, ang - step), 0.35f).SetEase(Ease.OutCubic);
         }
 
         public Card SelectedCard

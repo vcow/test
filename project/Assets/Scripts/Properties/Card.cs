@@ -65,7 +65,7 @@ namespace Properties
         private void OnValidate()
         {
             IDisposable task = null;
-            task = Observable.Interval(TimeSpan.Zero).
+            task = Observable.Interval(TimeSpan.FromSeconds(0.1)).
                 ObserveOnMainThread(MainThreadDispatchType.Update).Subscribe(unit =>
                 {
                     CardType = _type;
