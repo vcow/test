@@ -481,6 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b99029e82d4c1e94f583c069a3e91e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameSettings: {fileID: 11400000, guid: 45ee81b5448ef464084e86ecf0dab8ed, type: 2}
   _settingsWindow: {fileID: 38352577}
   _settingsButton: {fileID: 2082388688}
   _startButton: {fileID: 1626417085}

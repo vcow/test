@@ -1,4 +1,5 @@
 ﻿using System;
+using Models;
 using Settings;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -34,7 +35,7 @@ namespace Properties
         [SerializeField] private SpriteRenderer _face;
         [SerializeField] private SpriteRenderer _shirt;
         [SerializeField] private GameObject _view;
-        
+
         public Color Color
         {
             get { return _color; }
@@ -54,7 +55,11 @@ namespace Properties
             Assert.IsNotNull(_face);
             Assert.IsNotNull(_shirt);
 
-            var settings = GameSettings.Instance;
+#if UNITY_EDITOR
+            var settings = GameModel.Instance.GameSettings ?? GameSettings.GetSettingsInstance();
+#else
+            var settings = GameModel.Instance.GameSettings;
+    #endif
             _shirt.sprite = settings.Shirt;
             switch (CardType)
             {

@@ -1267,6 +1267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5885da2468bb4834b9525a1a2e5b2552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameSettings: {fileID: 11400000, guid: 45ee81b5448ef464084e86ecf0dab8ed, type: 2}
   _carousellPrefab: {fileID: 1514026390509272, guid: e58db500bca6a7a4f856a2f2ec2206db,
     type: 2}
   _leftButton: {fileID: 1803079690}

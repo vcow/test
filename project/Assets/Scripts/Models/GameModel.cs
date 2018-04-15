@@ -1,11 +1,14 @@
 ﻿using Properties;
 using Settings;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Models
 {
     public class GameModel
     {
+        private GameSettings _gameSettings;
+        
         private static GameModel _instance;
 
         public bool Cheeting;
@@ -17,10 +20,18 @@ namespace Models
         public int UserScores;
         public int EnemyScores;
 
-        private GameModel()
+        public GameSettings GameSettings
         {
-            Cheeting = GameSettings.Instance.Cheeting;
-            LuckPercent = Mathf.Clamp01(GameSettings.Instance.LuckPercent);
+            get { return _gameSettings; }
+            set
+            {
+                Assert.IsNotNull(value);
+                if (value == _gameSettings) return;
+                _gameSettings = value;
+                
+                Cheeting = _gameSettings.Cheeting;
+                LuckPercent = Mathf.Clamp01(_gameSettings.LuckPercent);
+            }
         }
 
         public static GameModel Instance

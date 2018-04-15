@@ -27,7 +27,7 @@ namespace Controllers
         private Card _enemyCard;
 
         private GameSceneMotionController _motionController;
-        private bool _isAnimated;
+        private bool _uiIsLocked;
 
         private Enemy _enemy;
 
@@ -84,6 +84,23 @@ namespace Controllers
             InitScene();
         }
 
+        private bool UiIsLocked
+        {
+            get { return _uiIsLocked; }
+            set
+            {
+                // ReSharper disable once RedundantCheckBeforeAssignment
+                if (value == _uiIsLocked) return;
+                _uiIsLocked = value;
+#if !UNITY_EDITOR
+                foreach (var btn in new[] {_leftButton, _rightButton, _goButton, _okButton})
+                {
+                    btn.enabled = !_uiIsLocked;
+                }
+    #endif
+            }
+        }
+
         protected override void InitScene()
         {
             Assert.IsNotNull(_leftButton);
@@ -113,23 +130,23 @@ namespace Controllers
 
         private void OnLeftButton()
         {
-            if (_isAnimated || _userCarousell == null) return;
+            if (UiIsLocked || _userCarousell == null) return;
 
-            _isAnimated = true;
-            _userCarousell.MoveLeft().onComplete += () => _isAnimated = false;
+            UiIsLocked = true;
+            _userCarousell.MoveLeft().onComplete += () => UiIsLocked = false;
         }
 
         private void OnRightButton()
         {
-            if (_isAnimated || _userCarousell == null) return;
+            if (UiIsLocked || _userCarousell == null) return;
 
-            _isAnimated = true;
-            _userCarousell.MoveRight().onComplete += () => _isAnimated = false;
+            UiIsLocked = true;
+            _userCarousell.MoveRight().onComplete += () => UiIsLocked = false;
         }
 
         private void OnGoButton()
         {
-            if (_isAnimated || _userCarousell == null) return;
+            if (UiIsLocked || _userCarousell == null) return;
 
             _userCard = _userCarousell.ExtractCard(_userCarousell.SelectedCard);
             GameModel.Instance.UserCard = _userCard.CardType;
@@ -139,9 +156,9 @@ namespace Controllers
 
         private void OnOkButton()
         {
-            if (_isAnimated) return;
+            if (UiIsLocked) return;
 
-            _isAnimated = true;
+            UiIsLocked = true;
             _motionController.HideRepeatUi(true);
 
             DoUserMove();
@@ -162,9 +179,9 @@ namespace Controllers
 
             _userCarousell.FillCards();
 
-            _isAnimated = true;
+            UiIsLocked = true;
             _motionController.ShowStartUi(initialize, delay + 1.5f, animateScores).onComplete +=
-                () => _isAnimated = false;
+                () => UiIsLocked = false;
             _motionController.ShowUserCarousell(delay);
         }
 
@@ -181,8 +198,8 @@ namespace Controllers
             _enemyCarousell = carousellInstance.GetComponent<Carousell>();
             Assert.IsNotNull(_enemyCarousell);
 
-            _isAnimated = true;
-            _motionController.HideStartUi(true, 0).onComplete += () => _isAnimated = false;
+            UiIsLocked = true;
+            _motionController.HideStartUi(true, 0).onComplete += () => UiIsLocked = false;
 
             _motionController.HideUserCarousell().onComplete += () =>
             {
@@ -244,8 +261,8 @@ namespace Controllers
                 Destroy(_enemyCard.gameObject);
                 _enemyCard = null;
 
-                _isAnimated = true;
-                _motionController.ShowRepeatUi(true).onComplete += () => _isAnimated = false;
+                UiIsLocked = true;
+                _motionController.ShowRepeatUi(true).onComplete += () => UiIsLocked = false;
             };
 
             UpdateScores();
