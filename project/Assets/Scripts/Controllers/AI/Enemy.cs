@@ -8,6 +8,10 @@ namespace Controllers.AI
 {
     public class Enemy
     {
+        /// <summary>
+        /// Сделать ход.
+        /// </summary>
+        /// <returns>Ход соперника.</returns>
         public CardType Move()
         {
             var model = GameModel.Instance;

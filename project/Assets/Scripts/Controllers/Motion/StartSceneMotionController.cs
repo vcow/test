@@ -12,6 +12,12 @@ namespace Controllers.Motion
             _startScene = startScene;
         }
 
+        /// <summary>
+        /// Показать UI.
+        /// </summary>
+        /// <param name="initialize">Переместить все элементы в исходное положение.</param>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween MoveUiIn(bool initialize, float delay = 0)
         {
             if (initialize)
@@ -25,6 +31,11 @@ namespace Controllers.Motion
                 .Join(_startScene.SettingsButton.DOAnchorPosY(-80f, 1f).SetEase(Ease.OutCubic));
         }
 
+        /// <summary>
+        /// Анимация окна настроек.
+        /// </summary>
+        /// <param name="doOpen">Если флаг установлен, меню открывается, иначе закрывается.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween MoveSettingsWindow(bool doOpen)
         {
             DOTween.Clear(_startScene.SettingsWindow);

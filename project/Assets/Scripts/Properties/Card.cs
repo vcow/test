@@ -20,6 +20,14 @@ namespace Properties
 
         private Renderer[] _renderers;
 
+        [SerializeField] private CardType _type;
+        [SerializeField] private SpriteRenderer _face;
+        [SerializeField] private SpriteRenderer _shirt;
+        [SerializeField] private GameObject _view;
+
+        /// <summary>
+        /// Тип карты.
+        /// </summary>
         public CardType CardType
         {
             get { return _cardType; }
@@ -31,12 +39,10 @@ namespace Properties
             }
         }
 
-        [SerializeField] private CardType _type;
-        [SerializeField] private SpriteRenderer _face;
-        [SerializeField] private SpriteRenderer _shirt;
-        [SerializeField] private GameObject _view;
-
-        public Color Color
+        /// <summary>
+        /// Базовый цвет карты.
+        /// </summary>
+        Color ICard.Color
         {
             get { return _color; }
             set

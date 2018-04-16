@@ -12,6 +12,13 @@ namespace Controllers.Motion
             _gameScene = gameScene;
         }
 
+        /// <summary>
+        /// Показать меню начала раунда.
+        /// </summary>
+        /// <param name="initialize">Переместить все элементы в исходное положение.</param>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <param name="animateScores">Анимировать счетчик очков.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween ShowStartUi(bool initialize, float delay = 0, bool animateScores = false)
         {
             if (initialize)
@@ -39,6 +46,13 @@ namespace Controllers.Motion
             return seq;
         }
 
+        /// <summary>
+        /// Скрыть меню начала раунда.
+        /// </summary>
+        /// <param name="initialize">Переместить все элементы в исходное положение.</param>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <param name="animateScores">Анимировать счетчик очков.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween HideStartUi(bool initialize, float delay = 0, bool animateScores = false)
         {
             if (initialize)
@@ -66,6 +80,12 @@ namespace Controllers.Motion
             return seq;
         }
 
+        /// <summary>
+        /// Показать меню перехода к следующему раунду.
+        /// </summary>
+        /// <param name="initialize">Переместить все элементы в исходное положение.</param>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween ShowRepeatUi(bool initialize, float delay = 0)
         {
             if (initialize)
@@ -76,6 +96,12 @@ namespace Controllers.Motion
             return _gameScene.OkButton.DOAnchorPosY(140f, 1f).SetEase(Ease.OutCubic).SetDelay(delay);
         }
 
+        /// <summary>
+        /// Скрыть меню перехода к следующему раунду.
+        /// </summary>
+        /// <param name="initialize">Переместить все элементы в исходное положение.</param>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween HideRepeatUi(bool initialize, float delay = 0)
         {
             if (initialize)
@@ -86,6 +112,11 @@ namespace Controllers.Motion
             return _gameScene.OkButton.DOAnchorPosY(-120f, 0.7f).SetEase(Ease.InBack).SetDelay(delay);
         }
 
+        /// <summary>
+        /// Появление на сцене карусели игрока.
+        /// </summary>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween ShowUserCarousell(float delay = 0)
         {
             _gameScene.UserCarousell.transform.position = new Vector3(0, 12, 0);
@@ -99,6 +130,11 @@ namespace Controllers.Motion
                     }, 360f, 0, 3f).SetEase(Ease.OutBack));
         }
 
+        /// <summary>
+        /// Уход со сцены карусели игрока.
+        /// </summary>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween HideUserCarousell(float delay = 0)
         {
             _gameScene.UserCarousell.transform.position = new Vector3(0, 0.4f, 0);
@@ -111,6 +147,11 @@ namespace Controllers.Motion
                     .SetEase(Ease.OutBack));
         }
 
+        /// <summary>
+        /// Появление на сцене карусели соперника.
+        /// </summary>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween ShowEnemyCarousell(float delay = 0)
         {
             _gameScene.EnemyCarousell.transform.position = new Vector3(4, 12, 4);
@@ -125,6 +166,11 @@ namespace Controllers.Motion
                     }, -240f, 0, 2f).SetEase(Ease.OutBack));
         }
 
+        /// <summary>
+        /// Уход со сцены карусели соперника.
+        /// </summary>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween HideEnemyCarousell(float delay = 0)
         {
             _gameScene.EnemyCarousell.transform.position = new Vector3(4, 0, 4);
@@ -137,11 +183,21 @@ namespace Controllers.Motion
                     .SetEase(Ease.OutBack));
         }
 
+        /// <summary>
+        /// Победа игрока.
+        /// </summary>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween UserWin(float delay = 0)
         {
             return _gameScene.UserCard.transform.DOMoveY(8.5f, 1.5f).SetEase(Ease.InCubic).SetDelay(delay);
         }
 
+        /// <summary>
+        /// Поражение игрока.
+        /// </summary>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween UserLose(float delay = 0)
         {
             var r = _gameScene.UserCard.transform.eulerAngles;
@@ -152,11 +208,21 @@ namespace Controllers.Motion
                     .SetEase(Ease.OutBounce).SetDelay(1f));
         }
 
+        /// <summary>
+        /// Победа соперника.
+        /// </summary>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween EnemyWin(float delay = 0)
         {
             return _gameScene.EnemyCard.transform.DOMoveY(8.5f, 1.5f).SetEase(Ease.InCubic).SetDelay(delay);
         }
 
+        /// <summary>
+        /// Поражение соперника.
+        /// </summary>
+        /// <param name="delay">Задержка анимации.</param>
+        /// <returns>Анимация перехода.</returns>
         public Tween EnemyLose(float delay = 0)
         {
             var r = _gameScene.EnemyCard.transform.eulerAngles;

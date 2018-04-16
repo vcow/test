@@ -11,15 +11,39 @@ namespace Models
         
         private static GameModel _instance;
 
+        /// <summary>
+        /// Режим игры (нечестный, если флаг установлен).
+        /// </summary>
         public bool Cheeting;
+        
+        /// <summary>
+        /// Процент удачи при нечестной игре.
+        /// </summary>
         public float LuckPercent;
 
+        /// <summary>
+        /// Текущая выбранная карта игрока.
+        /// </summary>
         public CardType UserCard;
+        
+        /// <summary>
+        /// Текущая выбранная карта соперника.
+        /// </summary>
         public CardType EnemyCard;
 
+        /// <summary>
+        /// Очки игрока.
+        /// </summary>
         public int UserScores;
+        
+        /// <summary>
+        /// Очки соперника.
+        /// </summary>
         public int EnemyScores;
 
+        /// <summary>
+        /// Предустановленные настройки игры.
+        /// </summary>
         public GameSettings GameSettings
         {
             get { return _gameSettings; }
@@ -39,6 +63,11 @@ namespace Models
             get { return _instance ?? (_instance = new GameModel()); }
         }
 
+        /// <summary>
+        /// Проверка на победу игрока.
+        /// </summary>
+        /// <param name="withDeadHeat">Считать победой ничью.</param>
+        /// <returns>Возвращает <code>true</code>, если игрок победил в текущем раунде.</returns>
         public bool IsUserWin(bool withDeadHeat)
         {
             if (withDeadHeat && UserCard == EnemyCard)
@@ -51,6 +80,11 @@ namespace Models
                    || UserCard == CardType.Stone && EnemyCard == CardType.Scissors;
         }
 
+        /// <summary>
+        /// Проверка на победу соперника.
+        /// </summary>
+        /// <param name="withDeadHeat">Считать победой ничью.</param>
+        /// <returns>Возвращает <code>true</code>, если соперник победил в текущем раунде.</returns>
         public bool IsEnemyWin(bool withDeadHeat)
         {
             if (withDeadHeat && UserCard == EnemyCard)

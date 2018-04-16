@@ -31,46 +31,73 @@ namespace Controllers
 
         private Enemy _enemy;
 
+        /// <summary>
+        /// Кнопка листания влево.
+        /// </summary>
         RectTransform IGameSceneController.LeftButton
         {
             get { return (RectTransform) _leftButton.transform.parent.transform; }
         }
 
+        /// <summary>
+        /// Кнопка листания вправо.
+        /// </summary>
         RectTransform IGameSceneController.RightButton
         {
             get { return (RectTransform) _rightButton.transform.parent.transform; }
         }
 
+        /// <summary>
+        /// Кнопка выбора карты.
+        /// </summary>
         RectTransform IGameSceneController.GoButton
         {
             get { return (RectTransform) _goButton.transform.parent.transform; }
         }
 
+        /// <summary>
+        /// Кнопка перехода на следующий раунд.
+        /// </summary>
         RectTransform IGameSceneController.OkButton
         {
             get { return (RectTransform) _okButton.transform.parent.transform; }
         }
 
+        /// <summary>
+        /// Поле отображения счета.
+        /// </summary>
         RectTransform IGameSceneController.Scores
         {
             get { return (RectTransform) _scoresLabel.transform; }
         }
 
+        /// <summary>
+        /// Текущая карусель игрока.
+        /// </summary>
         ICarousell IGameSceneController.UserCarousell
         {
             get { return _userCarousell; }
         }
 
+        /// <summary>
+        /// Текущая карусель противника.
+        /// </summary>
         ICarousell IGameSceneController.EnemyCarousell
         {
             get { return _enemyCarousell; }
         }
 
+        /// <summary>
+        /// Текущая карта игрока.
+        /// </summary>
         ICard IGameSceneController.UserCard
         {
             get { return _userCard; }
         }
 
+        /// <summary>
+        /// Текущая карта противника.
+        /// </summary>
         ICard IGameSceneController.EnemyCard
         {
             get { return _enemyCard; }
@@ -164,6 +191,9 @@ namespace Controllers
             DoUserMove();
         }
 
+        /// <summary>
+        /// Старт раунда.
+        /// </summary>
         private void DoUserMove(bool initialize = true, float delay = 0, bool animateScores = false)
         {
             Assert.IsNotNull(_carousellPrefab);
@@ -185,6 +215,9 @@ namespace Controllers
             _motionController.ShowUserCarousell(delay);
         }
 
+        /// <summary>
+        /// Ход противника.
+        /// </summary>
         private void DoEnemyMove()
         {
             Assert.IsNotNull(_carousellPrefab);
@@ -226,6 +259,9 @@ namespace Controllers
             };
         }
 
+        /// <summary>
+        /// Показ результата.
+        /// </summary>
         private void DoResult()
         {
             Assert.IsNotNull(_userCard);

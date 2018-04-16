@@ -12,8 +12,10 @@ namespace Properties
         [SerializeField] private GameObject _lookAtPoint;
         [SerializeField] private GameObject _cardsGroup;
         [SerializeField] private List<Card> _cards;
-        private Transform _cardsGroup1;
 
+        /// <summary>
+        /// Группа карт в карусели.
+        /// </summary>
         Transform ICarousell.CardsGroup
         {
             get { return _cardsGroup.transform; }
@@ -38,6 +40,9 @@ namespace Properties
             Gizmos.DrawSphere(_lookAtPoint.transform.position, 0.25f);
         }
 
+        /// <summary>
+        /// Заполнить карты в карусели уникальными значкниями.
+        /// </summary>
         public void FillCards()
         {
             var rawType = (int) Math.Round(Random.value * 2);
@@ -53,6 +58,10 @@ namespace Properties
             }
         }
 
+        /// <summary>
+        /// Крутить карусель вправо.
+        /// </summary>
+        /// <returns>Анимация перехода.</returns>
         public Tween MoveRight()
         {
             DOTween.Clear(_cardsGroup);
@@ -61,6 +70,10 @@ namespace Properties
             return _cardsGroup.transform.DORotate(new Vector3(0, ang + step), 0.5f).SetEase(Ease.OutBack);
         }
 
+        /// <summary>
+        /// Крутить карусель влево.
+        /// </summary>
+        /// <returns>Анимация перехода.</returns>
         public Tween MoveLeft()
         {
             DOTween.Clear(_cardsGroup);
@@ -69,6 +82,9 @@ namespace Properties
             return _cardsGroup.transform.DORotate(new Vector3(0, ang - step), 0.5f).SetEase(Ease.OutBack);
         }
 
+        /// <summary>
+        /// Выбранная карта. Определяется как карта с наименьшим углом отклонения от точки фокуса.
+        /// </summary>
         public Card SelectedCard
         {
             get
@@ -89,6 +105,11 @@ namespace Properties
             }
         }
 
+        /// <summary>
+        /// Извлеч карту из карусели.
+        /// </summary>
+        /// <param name="extractedCard">Извлекаемая карта.</param>
+        /// <returns>Извлеченная карта.</returns>
         public Card ExtractCard(Card extractedCard)
         {
             if (_cards.Contains(extractedCard))

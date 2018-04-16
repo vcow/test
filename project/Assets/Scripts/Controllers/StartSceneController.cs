@@ -17,16 +17,25 @@ namespace Controllers
 
         private StartSceneMotionController _motionController;
 
+        /// <summary>
+        /// Кнопка старта игры.
+        /// </summary>
         RectTransform IStartSceneController.StartButton
         {
             get { return (RectTransform) _startButton.transform; }
         }
 
+        /// <summary>
+        /// Кнопка открытия/закрытия окна настроек.
+        /// </summary>
         RectTransform IStartSceneController.SettingsButton
         {
             get { return (RectTransform) _settingsButton.transform.parent.transform; }
         }
 
+        /// <summary>
+        /// Окно настроек.
+        /// </summary>
         RectTransform IStartSceneController.SettingsWindow
         {
             get { return (RectTransform) _settingsWindow.transform; }
