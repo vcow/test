@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Models;
 using Properties;
 using UnityEngine;
@@ -17,7 +19,13 @@ namespace Controllers.AI
             var model = GameModel.Instance;
             if (!model.Cheeting)
             {
-                return (CardType) ((int) Mathf.Round(Random.value * 2));
+                var probs = new Dictionary<CardType, float>
+                {
+                    {CardType.Stone, Random.value},
+                    {CardType.Scissors, Random.value},
+                    {CardType.Paper, Random.value}
+                };
+                return probs.Aggregate((p1, p2) => p1.Value > p2.Value ? p1 : p2).Key;
             }
 
             const float deadHeatProb = 1.0f / 3.0f * 0.5f; // Вероятность выпадения ничьей.
