@@ -45,11 +45,9 @@ namespace Properties
         /// </summary>
         public void FillCards()
         {
-            var rawType = (int) Math.Round(Random.value * 2);
-            for (int i = 0, l = _cards.Count; i < l; ++i)
+            for (int i = 0, rawType = (int) Math.Round(Random.value * 100); i < _cards.Count; ++i)
             {
-                var type = (CardType) rawType;
-                rawType = ++rawType % 3;
+                var type = (CardType) (rawType++ % 3);
                 var card = _cards[i];
                 if (card != null)
                 {

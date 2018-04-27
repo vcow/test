@@ -16,50 +16,50 @@ namespace Controllers.AI
         /// <returns>Ход соперника.</returns>
         public CardType Move()
         {
+            const float prob = 1f / 3f;
+            float stoneProb, scissorsProb, paperProb;
             var model = GameModel.Instance;
             if (!model.Cheeting)
             {
-                var probs = new Dictionary<CardType, float>
-                {
-                    {CardType.Stone, Random.value},
-                    {CardType.Scissors, Random.value},
-                    {CardType.Paper, Random.value}
-                };
-                return probs.Aggregate((p1, p2) => p1.Value > p2.Value ? p1 : p2).Key;
-            }
-
-            const float deadHeatProb = 1.0f / 3.0f * 0.5f; // Вероятность выпадения ничьей.
-            var userWinProb = (1.0f - deadHeatProb) * Mathf.Clamp01(model.LuckPercent);
-            var userLoseProb = Mathf.Clamp01(1.0f - (deadHeatProb + userWinProb));
-
-            var rnd = Random.value;
-            if (rnd <= deadHeatProb)
-            {
-                // Ничья
-                return model.UserCard;
-            }
-            else if (rnd <= deadHeatProb + userLoseProb)
-            {
-                // Юзер проигрывает
-                switch (model.UserCard)
-                {
-                    case CardType.Paper: return CardType.Scissors;
-                    case CardType.Scissors: return CardType.Stone;
-                    case CardType.Stone: return CardType.Paper;
-                }
+                stoneProb = prob;
+                scissorsProb = prob;
+                paperProb = prob;
             }
             else
             {
-                // Юзер побеждает
+                var userWinProb = prob * 2f * Mathf.Clamp01(model.LuckPercent);
+                var deadHeatProb = Mathf.Clamp01(1.0f - userWinProb) * prob; // Вероятность выпадения ничьей.
+                var userLoseProb = Mathf.Clamp01(1.0f - (userWinProb + deadHeatProb));
+
                 switch (model.UserCard)
                 {
-                    case CardType.Paper: return CardType.Stone;
-                    case CardType.Scissors: return CardType.Paper;
-                    case CardType.Stone: return CardType.Scissors;
+                    case CardType.Paper:
+                        stoneProb = userWinProb;
+                        scissorsProb = userLoseProb;
+                        paperProb = deadHeatProb;
+                        break;
+                    case CardType.Scissors:
+                        stoneProb = userLoseProb;
+                        scissorsProb = deadHeatProb;
+                        paperProb = userWinProb;
+                        break;
+                    case CardType.Stone:
+                        stoneProb = deadHeatProb;
+                        scissorsProb = userWinProb;
+                        paperProb = userLoseProb;
+                        break;
+                    default:
+                        throw new NotSupportedException();
                 }
             }
 
-            throw new NotSupportedException();
+            var probs = new Dictionary<CardType, float>
+            {
+                {CardType.Stone, Random.value * stoneProb},
+                {CardType.Scissors, Random.value * scissorsProb},
+                {CardType.Paper, Random.value * paperProb}
+            };
+            return probs.Aggregate((p1, p2) => p1.Value > p2.Value ? p1 : p2).Key;
         }
     }
 }
